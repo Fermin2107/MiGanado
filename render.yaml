@@ -23,3 +23,14 @@ services:
         generateValue: true
       - key: FRONTEND_URL
         sync: false
+
+  - type: web
+    name: genetics-v2-frontend
+    runtime: static
+    rootDir: frontend
+    buildCommand: npm install && npx vite build
+    staticPublishPath: dist
+    plan: free
+    envVars:
+      - key: VITE_API_URL
+        sync: false
