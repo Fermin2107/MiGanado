@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Genetics v2
 
 Sistema de gestión genética bovina. Backend Flask + Frontend React/Vite + PostgreSQL.
@@ -155,3 +156,6 @@ python init_db.py
 curl https://genetics-v2-backend.onrender.com/api/health
 # Respuesta esperada: {"status": "ok"}
 ```
+=======
+# MiGanado
+>>>>>>> ef12394e0cc2d92b56c79d8cf7147bc69dec24e4
