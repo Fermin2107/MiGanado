@@ -1,5 +1,5 @@
 import os
-from flask import Flask
+from flask import Flask, jsonify
 from flask_cors import CORS
 from flask_login import LoginManager
 from flask_jwt_extended import JWTManager
@@ -18,11 +18,11 @@ def create_app():
     app.config.from_object(Config)
 
     db.init_app(app)
-    allowed = os.environ.get("ALLOWED_ORIGINS", "*")
-    origins = [o.strip() for o in allowed.split(",")] if allowed != "*" else "*"
-    CORS(app, resources={r"/api/*": {"origins": origins}})
 
-    jwt = JWTManager(app)
+    frontend_url = os.environ.get("FRONTEND_URL", "http://localhost:5173")
+    CORS(app, resources={r"/api/*": {"origins": frontend_url}})
+
+    JWTManager(app)
 
     login_manager = LoginManager(app)
 
@@ -35,6 +35,10 @@ def create_app():
     app.register_blueprint(animales_bp)
     app.register_blueprint(eventos_bp)
     app.register_blueprint(dashboard_bp)
+
+    @app.get("/api/health")
+    def health():
+        return jsonify({"status": "ok"})
 
     return app
 

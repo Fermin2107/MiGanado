@@ -101,3 +101,57 @@ Todas las rutas tienen prefijo `/api` y devuelven JSON.
 | GET    | /api/animales/:id/eventos                 | Historial de eventos               |
 | POST   | /api/animales/:id/eventos                 | Registrar evento                   |
 | DELETE | /api/eventos/:id                          | Eliminar evento                    |
+| GET    | /api/health                               | Health check                       |
+
+---
+
+## Deploy en Render
+
+### Servicios necesarios
+
+| Servicio | Tipo | Root Dir |
+|---|---|---|
+| `genetics-v2-db` | PostgreSQL (free) | — |
+| `genetics-v2-backend` | Web Service (Python) | `backend` |
+| `genetics-v2-frontend` | Static Site | `frontend` |
+
+### Variables de entorno — Backend (Web Service)
+
+| Variable | Valor |
+|---|---|
+| `DATABASE_URL` | Linkear a `genetics-v2-db` (Render lo inyecta solo con `render.yaml`) |
+| `SECRET_KEY` | Generar valor aleatorio (Render lo genera solo con `render.yaml`) |
+| `JWT_SECRET_KEY` | Generar valor aleatorio (Render lo genera solo con `render.yaml`) |
+| `FRONTEND_URL` | URL del Static Site, ej: `https://genetics-v2-frontend.onrender.com` |
+
+### Variables de entorno — Frontend (Static Site)
+
+| Variable | Valor |
+|---|---|
+| `VITE_API_URL` | URL del Web Service backend, ej: `https://genetics-v2-backend.onrender.com` |
+
+### Comandos de build/start
+
+**Backend:**
+- Build Command: `pip install -r requirements.txt`
+- Start Command: `gunicorn app:app`
+
+**Frontend:**
+- Build Command: `npm install && npm run build`
+- Publish Directory: `dist`
+
+### Inicializar la base de datos (solo el primer deploy)
+
+Desde **Render Shell** del Web Service backend:
+
+```bash
+python init_db.py
+```
+
+### Verificar que todo funciona
+
+```bash
+# Health check del backend
+curl https://genetics-v2-backend.onrender.com/api/health
+# Respuesta esperada: {"status": "ok"}
+```
