@@ -18,6 +18,8 @@ def create_app():
     app.config.from_object(Config)
 
     db.init_app(app)
+    with app.app_context():
+        db.create_all()
 
     frontend_url = os.environ.get("FRONTEND_URL", "http://localhost:5173")
     CORS(app, resources={r"/api/*": {"origins": frontend_url}}, supports_credentials=True)
