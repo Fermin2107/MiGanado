@@ -22,7 +22,7 @@ services:
       - key: JWT_SECRET_KEY
         generateValue: true
       - key: FRONTEND_URL
-        sync: false
+        value: https://miganado-1.onrender.com
 
   - type: web
     name: genetics-v2-frontend

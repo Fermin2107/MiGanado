@@ -20,7 +20,7 @@ def create_app():
     db.init_app(app)
 
     frontend_url = os.environ.get("FRONTEND_URL", "http://localhost:5173")
-    CORS(app, resources={r"/api/*": {"origins": frontend_url}})
+    CORS(app, resources={r"/api/*": {"origins": frontend_url}}, supports_credentials=True)
 
     JWTManager(app)
 
